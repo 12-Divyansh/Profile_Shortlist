@@ -60,6 +60,22 @@ const ShortlistPage = () => {
     setLoading(false);
   };
 
+  const handleSaveShortlist = async () => {
+    try {
+      setLoading(true);
+      await api.saveJob({
+        title: `Shortlist - ${skills.join(', ')}`,
+        requiredSkills: skills,
+        minExperience: Number(formData.minExperience)
+      });
+      alert('Shortlist saved successfully!');
+    } catch (err) {
+      console.error(err);
+      alert('Failed to save shortlist.');
+    }
+    setLoading(false);
+  };
+
   return (
     <div>
       <div className="card" style={{ marginBottom: '2rem' }}>
@@ -104,7 +120,12 @@ const ShortlistPage = () => {
       </div>
 
       {results && (
-        <ShortlistResults candidates={results} isAiMode={isAiMode} />
+        <ShortlistResults 
+          candidates={results} 
+          isAiMode={isAiMode} 
+          jobSkills={skills} 
+          onSave={handleSaveShortlist} 
+        />
       )}
     </div>
   );

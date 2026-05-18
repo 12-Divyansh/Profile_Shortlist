@@ -35,5 +35,25 @@ export const api = {
     });
     if (!res.ok) throw new Error('Failed to run AI shortlist');
     return res.json();
+  },
+
+  async generateInterviewQuestions(candidateSkills, jobSkills) {
+    const res = await fetch(`${API_BASE_URL}/ai/interview-questions`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ candidateSkills, jobSkills })
+    });
+    if (!res.ok) throw new Error('Failed to generate questions');
+    return res.json();
+  },
+
+  async saveJob(jobData) {
+    const res = await fetch(`${API_BASE_URL}/jobs`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(jobData)
+    });
+    if (!res.ok) throw new Error('Failed to save job');
+    return res.json();
   }
 };

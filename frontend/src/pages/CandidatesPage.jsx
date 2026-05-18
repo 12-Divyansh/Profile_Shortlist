@@ -23,10 +23,21 @@ const CandidatesPage = () => {
     fetchCandidates();
   }, []);
 
+  const [searchTerm, setSearchTerm] = useState('');
+  const [skillFilter, setSkillFilter] = useState('');
+
   const handleCandidateAdded = (newCandidate) => {
     setCandidates([newCandidate, ...candidates]);
     setShowForm(false);
   };
+
+  const filteredCandidates = candidates.filter(candidate => {
+    const matchesSearch = candidate.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
+                          candidate.email.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesSkill = skillFilter === '' || 
+                         candidate.skills.some(skill => skill.toLowerCase().includes(skillFilter.toLowerCase()));
+    return matchesSearch && matchesSkill;
+  });
 
   return (
     <div>
@@ -43,10 +54,29 @@ const CandidatesPage = () => {
         </div>
       )}
 
+      <div className="card" style={{ marginBottom: '2rem', display: 'flex', gap: '1rem', padding: '1rem 2rem' }}>
+        <input 
+          type="text" 
+          placeholder="Search by name or email..." 
+          className="form-control" 
+          value={searchTerm} 
+          onChange={(e) => setSearchTerm(e.target.value)} 
+          style={{ flex: 2 }}
+        />
+        <input 
+          type="text" 
+          placeholder="Filter by skill (e.g. React)" 
+          className="form-control" 
+          value={skillFilter} 
+          onChange={(e) => setSkillFilter(e.target.value)} 
+          style={{ flex: 1 }}
+        />
+      </div>
+
       {loading ? (
         <div>Loading candidates...</div>
       ) : (
-        <CandidateList candidates={candidates} />
+        <CandidateList candidates={filteredCandidates} />
       )}
     </div>
   );

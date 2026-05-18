@@ -10,5 +10,6 @@ router.get('/candidates', candidateController.getAllCandidates);
 router.post('/match', candidateController.basicMatch);
 router.post('/ai/shortlist', candidateController.aiShortlist);
 router.post('/ai/interview-questions', candidateController.generateInterviewQuestions);
+router.post('/jobs', candidateController.saveJob);
 
 module.exports = router;

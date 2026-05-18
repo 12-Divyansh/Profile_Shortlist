@@ -1,4 +1,5 @@
 const Candidate = require('../models/Candidate');
+const Job = require('../models/Job');
 const axios = require('axios');
 
 // Basic match logic extracted for reuse
@@ -170,3 +171,13 @@ exports.generateInterviewQuestions = async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 }
+
+exports.saveJob = async (req, res) => {
+    try {
+        const newJob = new Job(req.body);
+        const savedJob = await newJob.save();
+        res.status(201).json(savedJob);
+    } catch (err) {
+        res.status(400).json({ error: err.message });
+    }
+};
